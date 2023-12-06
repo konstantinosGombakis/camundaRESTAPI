@@ -1,0 +1,134 @@
+{
+	"info": {
+		"_postman_id": "e3018e2b-2bdd-45dc-886d-7564a02252f4",
+		"name": "camundaRest",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "9192452"
+	},
+	"item": [
+		{
+			"name": "create urn:ngsi-ld:ed:TemperatureSensor1",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/ld+json"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "\n[\n  {\n    \"id\": \"urn:ngsi-ld:ed:TemperatureSensor1\",\n    \"type\": \"TemperatureSensor\",\n    \"@context\": [\n      \"http://ed-ld-context/ed-context.jsonld\"\n    ],\n  \n    \"temperature\": {\n      \"type\": \"Property\",\n      \"value\": 10,\n      \"unitCode\": \"CEL\",\n      \"observedAt\": \"2023-09-16T17:06:49Z\"\n    }\n  }\n  ]\n"
+				},
+				"url": {
+					"raw": "http://localhost:1026/ngsi-ld/v1/entityOperations/upsert",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "1026",
+					"path": [
+						"ngsi-ld",
+						"v1",
+						"entityOperations",
+						"upsert"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get data from urn:ngsi-ld:ed:TemperatureSensor1",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Link",
+						"value": "<http://ed-ld-context/ed-context.jsonld>"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:1026/ngsi-ld/v1/entities/urn:ngsi-ld:ed:TemperatureSensor1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "1026",
+					"path": [
+						"ngsi-ld",
+						"v1",
+						"entities",
+						"urn:ngsi-ld:ed:TemperatureSensor1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create urn:ngsi-ld:ed:ieq1",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/ld+json"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "\n[\n  {\n    \"id\": \"urn:ngsi-ld:ed:ieq1\",\n    \"type\": \"IEQSensor\",\n    \"@context\": [\n      \"http://ed-ld-context/ed-context.jsonld\"\n    ],\n    \"temperature\": {\n      \"type\": \"Property\",\n      \"value\": 10,\n      \"unitCode\": \"CEL\",\n      \"observedAt\": \"2023-09-16T17:06:49Z\"\n    },\n        \"relativeHumidity\": {\n      \"type\": \"Property\",\n      \"value\": 39.0,\n      \"unitCode\": \"P1\",\n      \"observedAt\": \"2023-09-15T16:04:49Z\"\n    }\n  }\n  ]\n"
+				},
+				"url": {
+					"raw": "http://localhost:1026/ngsi-ld/v1/entityOperations/upsert",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "1026",
+					"path": [
+						"ngsi-ld",
+						"v1",
+						"entityOperations",
+						"upsert"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get data from urn:ngsi-ld:ed:ieq1",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Link",
+						"value": "<http://ed-ld-context/ed-context.jsonld>"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:1026/ngsi-ld/v1/entities/urn:ngsi-ld:ed:ieq1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "1026",
+					"path": [
+						"ngsi-ld",
+						"v1",
+						"entities",
+						"urn:ngsi-ld:ed:ieq1"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
