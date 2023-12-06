@@ -129,6 +129,76 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "set temperature urn:ngsi-ld:ed:TemperatureSensor1 at 1000oC",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/ld+json"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "\n[\n  {\n    \"id\": \"urn:ngsi-ld:ed:TemperatureSensor1\",\n    \"type\": \"TemperatureSensor\",\n    \"@context\": [\n      \"http://ed-ld-context/ed-context.jsonld\"\n    ],\n  \n    \"temperature\": {\n      \"type\": \"Property\",\n      \"value\": 1000,\n      \"unitCode\": \"CEL\",\n      \"observedAt\": \"2023-09-16T17:10:49Z\"\n    }\n  }\n  ]\n"
+				},
+				"url": {
+					"raw": "http://localhost:1026/ngsi-ld/v1/entityOperations/upsert",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "1026",
+					"path": [
+						"ngsi-ld",
+						"v1",
+						"entityOperations",
+						"upsert"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Set temperature, urn:ngsi-ld:ed:TemperatureSensor1 at 50oC",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/ld+json"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "\n[\n  {\n    \"id\": \"urn:ngsi-ld:ed:TemperatureSensor1\",\n    \"type\": \"TemperatureSensor\",\n    \"@context\": [\n      \"http://ed-ld-context/ed-context.jsonld\"\n    ],\n  \n    \"temperature\": {\n      \"type\": \"Property\",\n      \"value\": 50,\n      \"unitCode\": \"CEL\",\n      \"observedAt\": \"2023-09-16T17:10:49Z\"\n    }\n  }\n  ]\n"
+				},
+				"url": {
+					"raw": "http://localhost:1026/ngsi-ld/v1/entityOperations/upsert",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "1026",
+					"path": [
+						"ngsi-ld",
+						"v1",
+						"entityOperations",
+						"upsert"
+					]
+				}
+			},
+			"response": []
 		}
 	]
 }

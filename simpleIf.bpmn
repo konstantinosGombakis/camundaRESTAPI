@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_0ae55bk" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.15.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.19.0">
+  <bpmn:process id="Process_1nmycre" isExecutable="true" camunda:historyTimeToLive="100">
+    <bpmn:startEvent id="StartEvent_1">
+      <bpmn:outgoing>Flow_0nf29mt</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:endEvent id="Event_0w182w1">
+      <bpmn:extensionElements />
+      <bpmn:incoming>Flow_027n4du</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:exclusiveGateway id="Gateway_17thcbf">
+      <bpmn:incoming>Flow_1w4ulx5</bpmn:incoming>
+      <bpmn:outgoing>Flow_0f7k1lb</bpmn:outgoing>
+      <bpmn:outgoing>Flow_1okvxq3</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:intermediateCatchEvent id="Event_0lg3h73" name="10 sec">
+      <bpmn:incoming>Flow_0f7k1lb</bpmn:incoming>
+      <bpmn:outgoing>Flow_13n1khr</bpmn:outgoing>
+      <bpmn:timerEventDefinition id="TimerEventDefinition_0sh8ez5">
+        <bpmn:timeDuration xsi:type="bpmn:tFormalExpression">PT10S</bpmn:timeDuration>
+      </bpmn:timerEventDefinition>
+    </bpmn:intermediateCatchEvent>
+    <bpmn:sequenceFlow id="Flow_0f7k1lb" name="TemperatureSensor1&#60;100" sourceRef="Gateway_17thcbf" targetRef="Event_0lg3h73">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">#{TemperatureSensor1&lt;100}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_1okvxq3" name="TemperatureSensor1&#62;100" sourceRef="Gateway_17thcbf" targetRef="Event_1xh8bhi">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">#{TemperatureSensor1&gt;100}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:serviceTask id="Activity_1mfqm0b" name="Get data from Orion-LDurn:ngsi-ld:ed:TemperatureSensor1">
+      <bpmn:extensionElements>
+        <camunda:connector>
+          <camunda:inputOutput>
+            <camunda:inputParameter name="url">http://ed-orion-ld:1026/ngsi-ld/v1/entities/urn:ngsi-ld:ed:TemperatureSensor1</camunda:inputParameter>
+            <camunda:inputParameter name="method">GET</camunda:inputParameter>
+            <camunda:inputParameter name="headers">
+              <camunda:map>
+                <camunda:entry key="Link">&lt;http://ed-ld-context/ed-context.jsonld&gt;</camunda:entry>
+              </camunda:map>
+            </camunda:inputParameter>
+            <camunda:outputParameter name="sensorData">${response}</camunda:outputParameter>
+          </camunda:inputOutput>
+          <camunda:connectorId>http-connector</camunda:connectorId>
+        </camunda:connector>
+        <camunda:executionListener event="end">
+          <camunda:script scriptFormat="groovy">import groovy.json.JsonSlurper
+
+System.out.println("____________________________________")
+
+def response = execution.getVariable('sensorData')
+def jsonSlurper = new JsonSlurper()
+def jsonResponse = jsonSlurper.parseText(response)
+
+// Now you can access keys and values
+println "Keys: ${jsonResponse.keySet()}"
+println "Values: ${jsonResponse.values()}"
+println "Value for 'temparature': ${jsonResponse.temperature.value}"
+
+System.out.println("____________________________________")
+
+execution.setVariable('TemperatureSensor1', jsonResponse.temperature.value)
+
+def  TemperatureSensor1 = execution.getVariable('TemperatureSensor1')
+println "Values TemperatureSensor1: ${TemperatureSensor1}"</camunda:script>
+        </camunda:executionListener>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_13n1khr</bpmn:incoming>
+      <bpmn:incoming>Flow_0nf29mt</bpmn:incoming>
+      <bpmn:outgoing>Flow_1w4ulx5</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="Flow_1w4ulx5" sourceRef="Activity_1mfqm0b" targetRef="Gateway_17thcbf" />
+    <bpmn:sequenceFlow id="Flow_13n1khr" sourceRef="Event_0lg3h73" targetRef="Activity_1mfqm0b" />
+    <bpmn:sequenceFlow id="Flow_0nf29mt" sourceRef="StartEvent_1" targetRef="Activity_1mfqm0b" />
+    <bpmn:intermediateCatchEvent id="Event_1xh8bhi" name="10 sec">
+      <bpmn:incoming>Flow_1okvxq3</bpmn:incoming>
+      <bpmn:outgoing>Flow_027n4du</bpmn:outgoing>
+      <bpmn:timerEventDefinition id="TimerEventDefinition_0o5abmj">
+        <bpmn:timeDuration xsi:type="bpmn:tFormalExpression">PT10S</bpmn:timeDuration>
+      </bpmn:timerEventDefinition>
+    </bpmn:intermediateCatchEvent>
+    <bpmn:sequenceFlow id="Flow_027n4du" sourceRef="Event_1xh8bhi" targetRef="Event_0w182w1" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_1nmycre">
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+        <dc:Bounds x="179" y="99" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_17thcbf_di" bpmnElement="Gateway_17thcbf" isMarkerVisible="true">
+        <dc:Bounds x="565" y="92" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_1uqmwif" bpmnElement="Event_0lg3h73">
+        <dc:Bounds x="572" y="212" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="574" y="255" width="33" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_0yibdfq" bpmnElement="Activity_1mfqm0b">
+        <dc:Bounds x="380" y="77" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_0syt1q7" bpmnElement="Event_1xh8bhi">
+        <dc:Bounds x="742" y="99" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="744" y="142" width="33" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0w182w1_di" bpmnElement="Event_0w182w1">
+        <dc:Bounds x="872" y="99" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_0f7k1lb_di" bpmnElement="Flow_0f7k1lb">
+        <di:waypoint x="590" y="142" />
+        <di:waypoint x="590" y="212" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="596" y="166" width="87" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1okvxq3_di" bpmnElement="Flow_1okvxq3">
+        <di:waypoint x="615" y="117" />
+        <di:waypoint x="742" y="117" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="603" y="86" width="87" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1w4ulx5_di" bpmnElement="Flow_1w4ulx5">
+        <di:waypoint x="480" y="117" />
+        <di:waypoint x="565" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_13n1khr_di" bpmnElement="Flow_13n1khr">
+        <di:waypoint x="572" y="230" />
+        <di:waypoint x="430" y="230" />
+        <di:waypoint x="430" y="157" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0nf29mt_di" bpmnElement="Flow_0nf29mt">
+        <di:waypoint x="215" y="117" />
+        <di:waypoint x="380" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_027n4du_di" bpmnElement="Flow_027n4du">
+        <di:waypoint x="778" y="117" />
+        <di:waypoint x="872" y="117" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
