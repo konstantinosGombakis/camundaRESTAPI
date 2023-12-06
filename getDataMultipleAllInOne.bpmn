@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_0ae55bk" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.15.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.19.0">
+  <bpmn:process id="Process_1nmycre" isExecutable="true" camunda:historyTimeToLive="11">
+    <bpmn:startEvent id="StartEvent_1">
+      <bpmn:outgoing>Flow_1cac370</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:serviceTask id="Activity_06o8yuc" name="Get data from Orion-LDurn:ngsi-ld:ed:ieq1">
+      <bpmn:extensionElements>
+        <camunda:connector>
+          <camunda:inputOutput>
+            <camunda:inputParameter name="url">http://ed-orion-ld:1026/ngsi-ld/v1/entities/urn:ngsi-ld:ed:ieq1</camunda:inputParameter>
+            <camunda:inputParameter name="method">GET</camunda:inputParameter>
+            <camunda:inputParameter name="headers">
+              <camunda:map>
+                <camunda:entry key="Link">&lt;https://raw.githubusercontent.com/konstantinosGombakis/FORTESIE_data_model/main/demo/fortesie-context.jsonld&gt;</camunda:entry>
+                <camunda:entry key="rel">http://www.w3.org/ns/json-ld#context</camunda:entry>
+                <camunda:entry key="type">application/ld+json</camunda:entry>
+              </camunda:map>
+            </camunda:inputParameter>
+            <camunda:outputParameter name="sensorData2">${response}</camunda:outputParameter>
+          </camunda:inputOutput>
+          <camunda:connectorId>http-connector</camunda:connectorId>
+        </camunda:connector>
+        <camunda:executionListener event="end">
+          <camunda:script scriptFormat="groovy">import groovy.json.JsonSlurper
+
+System.out.println("____________________________________")
+
+def response = execution.getVariable('sensorData2')
+def jsonSlurper = new JsonSlurper()
+def jsonResponse = jsonSlurper.parseText(response)
+
+// Now you can access keys and values
+println "Keys: ${jsonResponse.keySet()}"
+println "Values: ${jsonResponse.values()}"
+println "Value for 'temparature': ${jsonResponse.temparature.value}"
+println "Value for 'relativeHumidity': ${jsonResponse.relativeHumidity.value}"
+System.out.println("____________________________________")
+
+execution.setVariable('TemperatureSensor1', jsonResponse.temparature.value)
+execution.setVariable('relativeHumidity', jsonResponse.relativeHumidity.value)
+
+def  TemperatureSensor1 = execution.getVariable('TemperatureSensor1')
+println "Values TemperatureSensor1: ${TemperatureSensor1}"
+
+def  relativeHumidity_local= execution.getVariable('relativeHumidity')
+println "Values relativeHumidity: ${relativeHumidity_local}"</camunda:script>
+        </camunda:executionListener>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1cac370</bpmn:incoming>
+      <bpmn:outgoing>Flow_0dyg0z0</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="Flow_1cac370" sourceRef="StartEvent_1" targetRef="Activity_06o8yuc" />
+    <bpmn:endEvent id="Event_0w182w1">
+      <bpmn:extensionElements />
+      <bpmn:incoming>Flow_0dyg0z0</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_0dyg0z0" sourceRef="Activity_06o8yuc" targetRef="Event_0w182w1" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_1nmycre">
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+        <dc:Bounds x="179" y="99" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1qq2c4p_di" bpmnElement="Activity_06o8yuc">
+        <dc:Bounds x="380" y="77" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0w182w1_di" bpmnElement="Event_0w182w1">
+        <dc:Bounds x="752" y="99" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_1cac370_di" bpmnElement="Flow_1cac370">
+        <di:waypoint x="215" y="117" />
+        <di:waypoint x="380" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0dyg0z0_di" bpmnElement="Flow_0dyg0z0">
+        <di:waypoint x="480" y="117" />
+        <di:waypoint x="752" y="117" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

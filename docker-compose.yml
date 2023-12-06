@@ -1,0 +1,54 @@
+version: "3.8"
+
+services:
+  ed-orion:
+    platform: linux/amd64
+    image: quay.io/fiware/orion-ld:${ORION_LD_VERSION}
+    hostname: ed-orion-ld
+    container_name: ed-orion-ld
+    restart: always
+    depends_on:
+      - ed-mongo-ld-db
+    networks:
+      - ed-network
+    ports:
+      - ${ORION_LD_PORT:-1026}:${ORION_LD_PORT:-1026}
+    command: -logLevel DEBUG -dbhost ed-mongo-ld-db -forwarding
+    healthcheck:
+      test: curl --fail -s http://ed-orion-ld:${ORION_LD_PORT}/version || exit 1
+
+
+  # Databases
+  ed-mongo-ld-db:
+    image: mongo:${MONGO_DB_VERSION}
+    hostname: ed-mongo-ld-db
+    container_name: ed-mongo-ld-db
+    expose:
+      - "${MONGO_DB_PORT}"
+    ports:
+      - "${MONGO_DB_PORT}:${MONGO_DB_PORT}" # localhost:27017
+    networks:
+      - ed-network
+    volumes:
+      - ed-mongo-ld-db-data:/data/db
+      - ed-mongo-ld-config:/data/configdb
+    healthcheck:
+      test: |
+        host=`hostname --ip-address || echo '127.0.0.1'`; 
+        mongo --quiet $host/test --eval 'quit(db.runCommand({ ping: 1 }).ok ? 0 : 2)' && echo 0 || echo 1    
+      interval: 5s
+  
+  camunda:
+    image: camunda/camunda-bpm-platform:latest
+    container_name: camunda-bpm
+    ports:
+      - "8080:8080" # http://localhost:8080/camunda-welcome/index.html
+    networks:
+      - ed-network
+
+networks:
+  ed-network:
+
+volumes:
+  ed-mongo-ld-db-data: ~
+  ed-mongo-ld-config: ~
