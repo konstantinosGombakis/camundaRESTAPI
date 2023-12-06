@@ -12,7 +12,7 @@
             <camunda:inputParameter name="method">GET</camunda:inputParameter>
             <camunda:inputParameter name="headers">
               <camunda:map>
-                <camunda:entry key="Link">&lt;https://raw.githubusercontent.com/konstantinosGombakis/FORTESIE_data_model/main/demo/fortesie-context.jsonld&gt;</camunda:entry>
+                <camunda:entry key="Link">&lt;http://ed-ld-context/ed-context.jsonld&gt;</camunda:entry>
                 <camunda:entry key="rel">http://www.w3.org/ns/json-ld#context</camunda:entry>
                 <camunda:entry key="type">application/ld+json</camunda:entry>
               </camunda:map>
@@ -33,11 +33,11 @@ def jsonResponse = jsonSlurper.parseText(response)
 // Now you can access keys and values
 println "Keys: ${jsonResponse.keySet()}"
 println "Values: ${jsonResponse.values()}"
-println "Value for 'temparature': ${jsonResponse.temparature.value}"
+println "Value for 'temperature': ${jsonResponse.temperature.value}"
 println "Value for 'relativeHumidity': ${jsonResponse.relativeHumidity.value}"
 System.out.println("____________________________________")
 
-execution.setVariable('TemperatureSensor1', jsonResponse.temparature.value)
+execution.setVariable('TemperatureSensor1', jsonResponse.temperature.value)
 execution.setVariable('relativeHumidity', jsonResponse.relativeHumidity.value)
 
 def  TemperatureSensor1 = execution.getVariable('TemperatureSensor1')

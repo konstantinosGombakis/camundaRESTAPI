@@ -1,6 +1,16 @@
 version: "3.8"
 
 services:
+  ld-context:
+    image: httpd:alpine
+    hostname: ed-ld-context
+    container_name: ed-ld-context
+    expose:
+        - "80:80"
+    networks:
+      - ed-network
+    volumes:
+        - datamodel:/usr/local/apache2/htdocs/
   ed-orion:
     platform: linux/amd64
     image: quay.io/fiware/orion-ld:${ORION_LD_VERSION}
@@ -52,3 +62,9 @@ networks:
 volumes:
   ed-mongo-ld-db-data: ~
   ed-mongo-ld-config: ~
+  datamodel:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ${PWD}/data-models

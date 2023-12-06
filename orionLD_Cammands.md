@@ -12,10 +12,10 @@ curl -iL -X POST  'http://localhost:1026/ngsi-ld/v1/entityOperations/upsert' \
     "id": "urn:ngsi-ld:ed:TemperatureSensor1",
     "type": "TemperatureSensor",
     "@context": [
-      "https://raw.githubusercontent.com/konstantinosGombakis/FORTESIE_data_model/main/demo/fortesie-context.jsonld"
+      "http://ed-ld-context/ed-context.jsonld"
     ],
   
-    "temparature": {
+    "temperature": {
       "type": "Property",
       "value": 10,
       "unitCode": "CEL",
@@ -31,9 +31,9 @@ curl -iL -X POST  'http://localhost:1026/ngsi-ld/v1/entityOperations/upsert' \
 Reading add the data from the entity/sensors TemperatureSensor1
 
 ```console
-curl -G -s -iX GET 'http://localhost:1026/ngsi-ld/v1/entities/urn:ngsi-ld:ed:TemperatureSensor1' \
--H 'Link: <https://raw.githubusercontent.com/konstantinosGombakis/FORTESIE_data_model/main/demo/fortesie-context.jsonld>; rel="http://www.w3.org/ns/json-ld#context"; type="application/ld+json"' \
--d 'options=sysAttrs'
+curl -X GET 'http://localhost:1026/ngsi-ld/v1/entities/urn:ngsi-ld:ed:TemperatureSensor1' \
+-H 'Link: <http://ed-ld-context/ed-context.jsonld>'
+
 ```
 
 
@@ -50,9 +50,9 @@ curl -iL -X POST  'http://localhost:1026/ngsi-ld/v1/entityOperations/upsert' \
     "id": "urn:ngsi-ld:ed:ieq1",
     "type": "IEQSensor",
     "@context": [
-      "https://raw.githubusercontent.com/konstantinosGombakis/FORTESIE_data_model/main/demo/fortesie-context.jsonld"
+      "http://ed-ld-context/ed-context.jsonld"
     ],
-    "temparature": {
+    "temperature": {
       "type": "Property",
       "value": 10,
       "unitCode": "CEL",
@@ -74,7 +74,7 @@ curl -iL -X POST  'http://localhost:1026/ngsi-ld/v1/entityOperations/upsert' \
 Reading add the data from the entity/sensors TemperatureSensor1
 
 ```console
-curl -G -s -iX GET 'http://localhost:1026/ngsi-ld/v1/entities/urn:ngsi-ld:ed:ieq1' \
--H 'Link: <https://raw.githubusercontent.com/konstantinosGombakis/FORTESIE_data_model/main/demo/fortesie-context.jsonld>; rel="http://www.w3.org/ns/json-ld#context"; type="application/ld+json"' \
--d 'options=sysAttrs'
+curl -X GET 'http://localhost:1026/ngsi-ld/v1/entities/urn:ngsi-ld:ed:ieq1' \
+-H 'Link: <http://ed-ld-context/ed-context.jsonld>'
 ```
+
