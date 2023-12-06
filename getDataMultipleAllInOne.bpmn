@@ -13,8 +13,6 @@
             <camunda:inputParameter name="headers">
               <camunda:map>
                 <camunda:entry key="Link">&lt;http://ed-ld-context/ed-context.jsonld&gt;</camunda:entry>
-                <camunda:entry key="rel">http://www.w3.org/ns/json-ld#context</camunda:entry>
-                <camunda:entry key="type">application/ld+json</camunda:entry>
               </camunda:map>
             </camunda:inputParameter>
             <camunda:outputParameter name="sensorData2">${response}</camunda:outputParameter>
