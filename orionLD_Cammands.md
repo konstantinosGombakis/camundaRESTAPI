@@ -26,7 +26,7 @@ curl -iL -X POST  'http://localhost:1026/ngsi-ld/v1/entityOperations/upsert' \
 '
 ```
 
-## Get data of a specific entity/sensor
+## Get data of TemperatureSensor1
 
 Reading add the data from the entity/sensors TemperatureSensor1
 
@@ -69,9 +69,8 @@ curl -iL -X POST  'http://localhost:1026/ngsi-ld/v1/entityOperations/upsert' \
 '
 ```
 
-## Get data of a specific entity/sensor
+## Reading data from the entity/sensors ieq1
 
-Reading add the data from the entity/sensors TemperatureSensor1
 
 ```console
 curl -X GET 'http://localhost:1026/ngsi-ld/v1/entities/urn:ngsi-ld:ed:ieq1' \

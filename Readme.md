@@ -14,12 +14,29 @@ Value for 'temperature': 10
 ____________________________________
 Values TemperatureSensor1: 10
 ```
-5. See camunda_rest.gif 
+5. See [camunda_rest.gif](./visual/camunda_rest.gif) 
 
 
 ## Example simpleIf process
-
+The process is a simple if statement to test the interaction with Orion-LD
 1. Set temperature of urn:ngsi-ld:ed:TemperatureSensor1 at 50oC with command from [orionLD_Cammands.md](./orionLD_Cammands.md) or postman
 2. Run the "simpleIf.bpmn" and open the instance in Camunda Cockpit
 3. Raise the temperature to 1000oC by running command from [orionLD_Cammands.md](./orionLD_Cammands.md) or postman 
 4. The presses finish 
+
+
+## Example add 1oC Temperature process 
+The process is a simple GET and POST message from/to Orion-LD
+The temperature is increasing by 1oC every iteration and also the current timestamp is send
+
+1. Set temperature of urn:ngsi-ld:ed:TemperatureSensor1 at 50oC with command from [orionLD_Cammands.md](./orionLD_Cammands.md) or postman
+2. Run the "add1DegreeToTemperature.bpmn" and open the instance in Camunda Cockpit
+3. Get the current temperature by running command from [orionLD_Cammands.md](./orionLD_Cammands.md) or postman 
+4. The presses finish 
+
+### Creating the "currentTime"
+![currentTime](visual/setCurrentTime.png)
+
+
+### Prepare the POST payload
+![payload](visual/PostRequest.png)
