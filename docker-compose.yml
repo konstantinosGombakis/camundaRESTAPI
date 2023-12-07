@@ -10,7 +10,7 @@ services:
     networks:
       - ed-network
     volumes:
-        - datamodel:/usr/local/apache2/htdocs/
+        - ./data-models:/usr/local/apache2/htdocs/
   ed-orion:
     platform: linux/amd64
     image: quay.io/fiware/orion-ld:${ORION_LD_VERSION}
@@ -62,9 +62,3 @@ networks:
 volumes:
   ed-mongo-ld-db-data: ~
   ed-mongo-ld-config: ~
-  datamodel:
-    driver: local
-    driver_opts:
-      type: none
-      o: bind
-      device: ${PWD}/data-models
