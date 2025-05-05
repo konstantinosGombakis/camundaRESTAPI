@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_1ec400z" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.22.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.21.0">
+  <bpmn:process id="Process_0c6fo5a" isExecutable="true" camunda:historyTimeToLive="P1D">
+    <bpmn:startEvent id="StartEvent_1">
+      <bpmn:outgoing>Flow_0j0w1xs</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:serviceTask id="Activity_1mfqm0b" name="Get data from CERCULOOS IDM">
+      <bpmn:extensionElements>
+        <camunda:connector>
+          <camunda:inputOutput>
+            <camunda:inputParameter name="url">https://circuloos-platform.eurodyn.com/idm/realms/fiware-server/protocol/openid-connect/token</camunda:inputParameter>
+            <camunda:inputParameter name="method">POST</camunda:inputParameter>
+            <camunda:inputParameter name="headers">
+              <camunda:map>
+                <camunda:entry key="Content-Type">application/x-www-form-urlencoded</camunda:entry>
+              </camunda:map>
+            </camunda:inputParameter>
+            <camunda:inputParameter name="payload">username=test-circuloos&amp;password=2UnGRKm7NW8Wxa9Z3N&amp;grant_type=password&amp;client_id=orion-pep&amp;client_secret=yWv2aRCm3KKMGrj9lMXQcEXY4v80tcFk</camunda:inputParameter>
+            <camunda:outputParameter name="idm_response">${response}</camunda:outputParameter>
+          </camunda:inputOutput>
+          <camunda:connectorId>http-connector</camunda:connectorId>
+        </camunda:connector>
+        <camunda:executionListener event="end">
+          <camunda:script scriptFormat="groovy">import groovy.json.JsonSlurper
+
+System.out.println("____________________________________")
+
+def response = execution.getVariable('idm_response')
+def jsonSlurper = new JsonSlurper()
+def jsonResponse = jsonSlurper.parseText(response)
+
+// Now you can access keys and values
+println "Keys: ${jsonResponse.keySet()}"
+println "Values: ${jsonResponse.values()}"
+println "Value for 'access_token': ${jsonResponse.access_token}"
+
+System.out.println("____________________________________")
+
+execution.setVariable('access_token', jsonResponse.access_token)
+
+def  access_token= execution.getVariable('access_token')
+println "Values access_token: ${access_token}"</camunda:script>
+        </camunda:executionListener>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0j0w1xs</bpmn:incoming>
+      <bpmn:outgoing>Flow_0gwksb9</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="Flow_0j0w1xs" sourceRef="StartEvent_1" targetRef="Activity_1mfqm0b" />
+    <bpmn:endEvent id="Event_0o15frv">
+      <bpmn:incoming>Flow_0dfmx23</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_0gwksb9" sourceRef="Activity_1mfqm0b" targetRef="Activity_06i6qjm" />
+    <bpmn:serviceTask id="Activity_06i6qjm" name="Get Orion-LD version">
+      <bpmn:extensionElements>
+        <camunda:connector>
+          <camunda:inputOutput>
+            <camunda:inputParameter name="url">https://circuloos-platform.eurodyn.com/kong/keycloak-orion/version</camunda:inputParameter>
+            <camunda:inputParameter name="method">GET</camunda:inputParameter>
+            <camunda:inputParameter name="headers">
+              <camunda:map>
+                <camunda:entry key="Authorization"> Bearer ${access_token}</camunda:entry>
+              </camunda:map>
+            </camunda:inputParameter>
+            <camunda:outputParameter name="orion_version_respone">${response}</camunda:outputParameter>
+          </camunda:inputOutput>
+          <camunda:connectorId>http-connector</camunda:connectorId>
+        </camunda:connector>
+        <camunda:executionListener event="end">
+          <camunda:script scriptFormat="groovy">import groovy.json.JsonSlurper
+
+System.out.println("____________________________________")
+
+def response = execution.getVariable('orion_version_respone')
+def jsonSlurper = new JsonSlurper()
+def jsonResponse = jsonSlurper.parseText(response)
+
+// Now you can access keys and values
+println "Keys: ${jsonResponse.keySet()}"
+println "Values: ${jsonResponse.values()}"
+
+System.out.println("____________________________________")
+</camunda:script>
+        </camunda:executionListener>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0gwksb9</bpmn:incoming>
+      <bpmn:outgoing>Flow_0dfmx23</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="Flow_0dfmx23" sourceRef="Activity_06i6qjm" targetRef="Event_0o15frv" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_0c6fo5a">
+      <bpmndi:BPMNShape id="BPMNShape_0yibdfq" bpmnElement="Activity_1mfqm0b">
+        <dc:Bounds x="330" y="77" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0o15frv_di" bpmnElement="Event_0o15frv">
+        <dc:Bounds x="752" y="99" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_1xks77o" bpmnElement="Activity_06i6qjm">
+        <dc:Bounds x="540" y="77" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+        <dc:Bounds x="152" y="99" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_0j0w1xs_di" bpmnElement="Flow_0j0w1xs">
+        <di:waypoint x="188" y="117" />
+        <di:waypoint x="330" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0gwksb9_di" bpmnElement="Flow_0gwksb9">
+        <di:waypoint x="430" y="117" />
+        <di:waypoint x="540" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0dfmx23_di" bpmnElement="Flow_0dfmx23">
+        <di:waypoint x="640" y="117" />
+        <di:waypoint x="752" y="117" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
