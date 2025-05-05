@@ -1,0 +1,56 @@
+{
+  "components": [
+    {
+      "text": "# CIRCULOOS provider ",
+      "label": "Text view",
+      "type": "text",
+      "layout": {
+        "row": "Row_0kvyxx9",
+        "columns": null
+      },
+      "id": "Field_0f0gqzx"
+    },
+    {
+      "label": "Username",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_0yrspl6",
+        "columns": null
+      },
+      "id": "Field_0ar7e52",
+      "key": "idm_username",
+      "defaultValue": "test-circuloos"
+    },
+    {
+      "label": "Password",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_1gousug",
+        "columns": null
+      },
+      "id": "Field_0q2qy6k",
+      "key": "idm_password",
+      "defaultValue": "2UnGRKm7NW8Wxa9Z3N"
+    },
+    {
+      "label": "Client_secret",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_16tfp1j",
+        "columns": null
+      },
+      "id": "Field_02f2xva",
+      "key": "idm_client_secret",
+      "defaultValue": "yWv2aRCm3KKMGrj9lMXQcEXY4v80tcFk"
+    }
+  ],
+  "type": "default",
+  "id": "circuloos_idm_form",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.22.0"
+  },
+  "executionPlatform": "Camunda Platform",
+  "executionPlatformVersion": "7.21.0",
+  "schemaVersion": 16
+}

@@ -40,3 +40,8 @@ The temperature is increasing by 1oC every iteration and also the current timest
 
 ### Prepare the POST payload
 ![payload](visual/PostRequest.png)
+
+# For CIRCULOOS project
+
+A example .bpmn and form to request the username and password of the user, get the Bearer token and adding to the POST request for the the Orion-LD version.
+See ![get_access_token.bpmn](./CIRCULOOS/get_access_token.bpmn)
