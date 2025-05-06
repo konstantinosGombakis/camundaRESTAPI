@@ -1,0 +1,96 @@
+{
+  "components": [
+    {
+      "text": "# Add details of wood to CIRCULOOS Data platform",
+      "type": "text",
+      "layout": {
+        "row": "Row_0c7t2dw",
+        "columns": null
+      },
+      "id": "Field_0eew1kp"
+    },
+    {
+      "label": "ID",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_107gup1",
+        "columns": null
+      },
+      "id": "Field_1dq53i6",
+      "key": "material_id",
+      "description": "=\"Needs to start with  urn:ngsi-ld:wood: ie: \" + woodId",
+      "validate": {
+        "minLength": "12",
+        "required": true
+      },
+      "properties": {}
+    },
+    {
+      "label": "type",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_0gpw8z7",
+        "columns": null
+      },
+      "id": "Field_03w7l8j",
+      "key": "type",
+      "defaultValue": "wood"
+    },
+    {
+      "label": "species",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_1l70lam",
+        "columns": null
+      },
+      "id": "Field_1cldbb9",
+      "key": "species",
+      "defaultValue": "pine"
+    },
+    {
+      "label": "owned By",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_0c8iox1",
+        "columns": null
+      },
+      "id": "Field_16ppfxd",
+      "key": "ownedBy",
+      "defaultValue": "urn:ngsi-ld:Company:101"
+    },
+    {
+      "label": "Weight (in kg)",
+      "type": "number",
+      "layout": {
+        "row": "Row_1avxsw1",
+        "columns": null
+      },
+      "id": "Field_088dyks",
+      "key": "weight",
+      "validate": {
+        "required": true,
+        "min": "0"
+      }
+    },
+    {
+      "label": "NGSILD-Tenant",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_1gbzg7y",
+        "columns": null
+      },
+      "id": "Field_1oksip0",
+      "key": "ngsildTenant",
+      "defaultValue": "circuloos_ed_wood"
+    }
+  ],
+  "type": "default",
+  "id": "add_material",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.34.0"
+  },
+  "executionPlatform": "Camunda Platform",
+  "executionPlatformVersion": "7.23.0",
+  "schemaVersion": 18
+}
